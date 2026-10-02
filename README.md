@@ -1,73 +1,98 @@
-# DESCRIPTION DU PROJET
+# Simulation Mobile Money
 
-Simulation Mobile Money est une application console de **gestion financière** développée en **Java** avec une persistance des données sous **MySQL**. Elle simule les fonctionnalités essentielles d'un service de Mobile Money (Dépôts, Retraits, Consultation).
+Application console en **Java** qui simule les fonctionnalités essentielles d'un service de Mobile Money : création de clients, dépôts, retraits et consultation de l'historique. Les données sont persistées dans **MySQL** via **JDBC**.
 
-L'objectif de cette application est de fournir une plateforme robuste pour gérer de manière automatisée et sécurisée les interactions financières des clients. Le système repose sur une architecture **DAO (Data Access Object)** pour garantir une séparation claire entre la logique métier et le stockage des données.
+Projet réalisé dans le cadre du DUT2 à l'École Supérieure Polytechnique de Dakar.
 
-## **Architecture Technique**
-Le projet est structuré en plusieurs couches :
-* **Model** : Représentation des entités métier (**Client**, **Compte**, **Operation**).
-* **DAO** : Gestion de la persistance des données via **JDBC**.
-* **Database** : Connexion centralisée à MySQL via le pattern **Singleton**.
+## Fonctionnalités
 
-## **Modélisation UML**
-Le système a été conçu en respectant les principes de la **POO**. Voici le diagramme de classes qui sert de base au développement :
+- Création d'un client avec génération automatique d'un numéro de compte
+- Dépôt sur un compte
+- Retrait depuis un compte
+- Consultation du solde
+- Historique des opérations d'un compte
+
+## Architecture
+
+Le projet suit une architecture **DAO (Data Access Object)** pour séparer la logique métier de l'accès aux données.
+
+| Couche | Rôle |
+|---|---|
+| **Model** | Entités métier : `Client`, `Compte`, `Operation` |
+| **DAO** | Accès aux données via JDBC |
+| **Database** | Connexion centralisée à MySQL (pattern **Singleton**) |
+
+### Diagramme de classes
 
 ![Diagramme de classes UML](Diagramme_Classe.png)
 
----
+## Technologies
 
-#  INSTRUCTIONS D'INSTALLATION
+- Java 17
+- MySQL (via XAMPP)
+- JDBC (`mysql-connector-j-9.5.0.jar`)
+- UML 2.0 (Draw.io)
 
-## **Prérequis**
-* **Java JDK 17+** installé.
-* **XAMPP** (pour MySQL et phpMyAdmin).
-* Pilote JDBC : **`mysql-connector-j-9.5.0.jar`** (placé dans le dossier `/lib`).
+## Installation
 
-## **Configuration de la Base de Données**
-1. Démarrez les modules **Apache** et **MySQL** via le panneau de contrôle XAMPP.
-2. Créez une base de données nommée `simulation_mobile_money`.
-3. Importez le script SQL :
-   ```sql
-   SOURCE database.sql;
+### Prérequis
 
-# EXEMPLES D'UTILISATION
+- Java JDK 17+
+- XAMPP (MySQL + phpMyAdmin)
+- Driver JDBC `mysql-connector-j-9.5.0.jar` placé dans le dossier `/lib`
 
-Voici les principaux flux d'utilisation de l'application 
+### Base de données
 
-## Scénario A : Enregistrement d'un nouveau client
-* **Action** : Choisir l'option "Créer un Client".
-* **Entrées** : Nom (ex: DIA), Prénom (ex: Abdou), Téléphone (ex: 77XXXXXXX).
-* **Résultat** : Un message confirme l'ajout en base et le système génère automatiquement un numéro de compte associé.
+1. Démarrer **Apache** et **MySQL** depuis XAMPP.
+2. Créer la base `simulation_mobile_money`.
+3. Importer le script `database.sql` (via phpMyAdmin, onglet *Importer*, ou en ligne de commande) :
 
-## Scénario B : Réalisation d'un dépôt
-* **Action** : Sélectionner "Faire un dépôt".
-* **Entrées** : Numéro de compte cible et montant (ex: 25 000 FCFA).
-* **Effets en base** :
-    * Le solde du compte est incrémenté.
-    * Une ligne est ajoutée dans la table `operation` avec le type **DEPOT** et l'horodatage précis.
+```sql
+SOURCE database.sql;
+```
 
-## Scénario C : Consultation de l'historique
-* **Action** : Sélectionner "Historique des opérations".
-* **Entrée** : Numéro du compte.
-* **Affichage** : Un tableau listant toutes les transactions passées pour vérifier les flux financiers en temps réel.
+### Lancement
 
----
+```bash
+git clone https://github.com/jeynita/Simulation_Mobile_Money.git
+cd Simulation_Mobile_Money
+# Compiler et lancer (adapte le chemin de la classe principale)
+javac -cp "lib/*" -d out $(find src -name "*.java")
+java -cp "out:lib/*" <PackageDeLaClassePrincipale>.Main
+```
 
-# Stack Technique
+> Sous Windows, remplace `:` par `;` dans le classpath.
+> Vérifie l'URL, l'utilisateur et le mot de passe MySQL dans la classe de connexion.
 
-* **Langage** : Java
-* **Base de données** : MySQL (via XAMPP)
-* **Connecteur** : JDBC (Java Database Connectivity)
-* **Conception** : UML 2.0 (réalisé avec Draw.io)
+## Exemples d'utilisation
 
----
+**Créer un client**
+- Menu : *Créer un Client*
+- Entrées : nom (ex : DIA), prénom (ex : Abdou), téléphone (ex : 77XXXXXXX)
+- Résultat : le client est enregistré en base et un numéro de compte est généré.
 
-# Équipe de développement (ESP)
+**Faire un dépôt**
+- Menu : *Faire un dépôt*
+- Entrées : numéro de compte, montant (ex : 25 000 FCFA)
+- Résultat : le solde est incrémenté et une ligne `DEPOT` horodatée est ajoutée dans la table `operation`.
 
-Projet réalisé par l'équipe :
-* **Diarra DIA**
-* **Dieynaba BALDE**
-* **Rokhaya GUEYE**
+**Consulter l'historique**
+- Menu : *Historique des opérations*
+- Entrée : numéro de compte
+- Résultat : la liste de toutes les transactions du compte.
 
-**Formation** : DUT2 Informatique - École Supérieure Polytechnique de Dakar
+## Équipe
+
+- Diarra DIA
+- Dieynaba BALDE
+- Rokhaya GUEYE
+
+## Ma contribution
+
+- J'étais en charge de la partie backend.
+
+## Améliorations possibles
+
+- Ajouter un transfert entre comptes
+- Ajouter des tests unitaires
+- Passer à Maven pour gérer les dépendances
