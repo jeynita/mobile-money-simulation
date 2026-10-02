@@ -91,8 +91,3 @@ java -cp "out:lib/*" <PackageDeLaClassePrincipale>.Main
 
 - J'étais en charge de la partie backend.
 
-## Améliorations possibles
-
-- Ajouter un transfert entre comptes
-- Ajouter des tests unitaires
-- Passer à Maven pour gérer les dépendances
