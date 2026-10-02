@@ -81,13 +81,3 @@ java -cp "out:lib/*" <PackageDeLaClassePrincipale>.Main
 - Entrée : numéro de compte
 - Résultat : la liste de toutes les transactions du compte.
 
-## Équipe
-
-- Diarra DIA
-- Dieynaba BALDE
-- Rokhaya GUEYE
-
-## Ma contribution
-
-- J'étais en charge de la partie backend.
-
