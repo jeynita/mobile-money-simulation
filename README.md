@@ -1,8 +1,13 @@
 # Simulation Mobile Money
 
-Application console en **Java** qui simule les fonctionnalités essentielles d'un service de Mobile Money : création de clients, dépôts, retraits et consultation de l'historique. Les données sont persistées dans **MySQL** via **JDBC**.
+> Application console Java qui simule les opérations essentielles d'un service de Mobile Money : clients, dépôts, retraits et historique.
 
-Projet réalisé dans le cadre du DUT2 à l'École Supérieure Polytechnique de Dakar.
+![Java](https://img.shields.io/badge/Java-ED8B00?style=flat-square&logo=openjdk&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white)
+![JDBC](https://img.shields.io/badge/JDBC-007396?style=flat-square&logo=openjdk&logoColor=white)
+![UML](https://img.shields.io/badge/UML-2.0-informational?style=flat-square)
+
+Projet d'équipe réalisé dans le cadre du DUT2 Informatique à l'École Supérieure Polytechnique de Dakar. Les données sont persistées dans **MySQL** via **JDBC**.
 
 ## Fonctionnalités
 
@@ -21,10 +26,24 @@ Le projet suit une architecture **DAO (Data Access Object)** pour séparer la lo
 | **Model** | Entités métier : `Client`, `Compte`, `Operation` |
 | **DAO** | Accès aux données via JDBC |
 | **Database** | Connexion centralisée à MySQL (pattern **Singleton**) |
+| **Interface utilisateur** | Menus de l'application console |
 
 ### Diagramme de classes
 
 ![Diagramme de classes UML](Diagramme_Classe.png)
+
+## Structure du projet
+
+```
+Simulation_Mobile_Money/
+├── source/                  # Model, DAO, Database
+├── interfaceUtilisateur/    # Menus console
+├── lib/                     # Driver JDBC MySQL
+├── main.java                # Point d'entrée
+├── database.sql             # Script de création de la base
+├── Diagramme_Classe.png     # Diagramme de classes
+└── Diagramme_Classe.drawio  # Source du diagramme (Draw.io)
+```
 
 ## Technologies
 
@@ -39,45 +58,51 @@ Le projet suit une architecture **DAO (Data Access Object)** pour séparer la lo
 
 - Java JDK 17+
 - XAMPP (MySQL + phpMyAdmin)
-- Driver JDBC `mysql-connector-j-9.5.0.jar` placé dans le dossier `/lib`
+- Driver `mysql-connector-j-9.5.0.jar` dans le dossier `lib/`
 
 ### Base de données
 
-1. Démarrer **Apache** et **MySQL** depuis XAMPP.
+1. Démarrer **MySQL** depuis XAMPP.
 2. Créer la base `simulation_mobile_money`.
-3. Importer le script `database.sql` (via phpMyAdmin, onglet *Importer*, ou en ligne de commande) :
+3. Importer `database.sql` (phpMyAdmin, onglet *Importer*, ou en ligne de commande) :
 
 ```sql
 SOURCE database.sql;
 ```
+
+4. Vérifier l'URL, l'utilisateur et le mot de passe MySQL dans la classe de connexion.
 
 ### Lancement
 
 ```bash
 git clone https://github.com/jeynita/Simulation_Mobile_Money.git
 cd Simulation_Mobile_Money
-# Compiler et lancer (adapte le chemin de la classe principale)
-javac -cp "lib/*" -d out $(find src -name "*.java")
-java -cp "out:lib/*" <PackageDeLaClassePrincipale>.Main
 ```
 
-> Sous Windows, remplace `:` par `;` dans le classpath.
-> Vérifie l'URL, l'utilisateur et le mot de passe MySQL dans la classe de connexion.
+Linux / macOS :
+```bash
+javac -cp "lib/*" -d out $(find . -name "*.java")
+java -cp "out:lib/*" main
+```
+
+Windows (PowerShell) :
+```powershell
+javac -cp "lib/*" -d out (Get-ChildItem -Recurse -Filter *.java).FullName
+java -cp "out;lib/*" main
+```
+
+Tu peux aussi ouvrir le projet dans VS Code et lancer `main.java`.
 
 ## Exemples d'utilisation
 
-**Créer un client**
-- Menu : *Créer un Client*
-- Entrées : nom (ex : DIA), prénom (ex : Abdou), téléphone (ex : 77XXXXXXX)
-- Résultat : le client est enregistré en base et un numéro de compte est généré.
+| Scénario | Entrées | Résultat |
+|---|---|---|
+| **Créer un client** | Nom, prénom, téléphone | Client enregistré en base, numéro de compte généré |
+| **Faire un dépôt** | Numéro de compte, montant (ex : 25 000 FCFA) | Solde incrémenté, ligne `DEPOT` horodatée dans la table `operation` |
+| **Faire un retrait** | Numéro de compte, montant | Solde débité, ligne `RETRAIT` ajoutée dans `operation` |
+| **Consulter l'historique** | Numéro de compte | Liste de toutes les transactions du compte |
 
-**Faire un dépôt**
-- Menu : *Faire un dépôt*
-- Entrées : numéro de compte, montant (ex : 25 000 FCFA)
-- Résultat : le solde est incrémenté et une ligne `DEPOT` horodatée est ajoutée dans la table `operation`.
 
-**Consulter l'historique**
-- Menu : *Historique des opérations*
-- Entrée : numéro de compte
-- Résultat : la liste de toutes les transactions du compte.
-
+- Transfert entre comptes
+- Tests unitaires
+- Passage à Maven pour gérer les dépendances
